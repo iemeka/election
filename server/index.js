@@ -44,7 +44,7 @@ app.get("/lga", (req, res) => {
 // select lga_id, lga_name from lga;
 app.get("/ward", (req, res) => {
   pool.query("SELECT ward_id, ward_name FROM ward", (err, result) => {
-    res.send(result.rows );
+    res.send(result.rows);
   });
 });
 
@@ -108,33 +108,43 @@ const createPollingUnit = (req, res, next) => {
     iQuery,
     [unitId, wardId, lgaId, pollingUnitName],
     (err, result) => {
-      // console.log(result);
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        req.unitId = unitId;
+        next();
+      }
     }
   );
-  req.unitId = unitId;
-  next();
 };
 
 const enterPartyResult = (req, res, next) => {
-  // party abbreviation - upper case. 
+  // party abbreviation - upper case.
   // asyn iteration to add result for all party. [{party:score}, .., ..]
   const { partyResults } = req.body; // party score - [{abbr:abbr,score:score},..]
-  const iQuery =
-    "INSERT INTO announced_pu_results (polling_unit_uniqueid, party_abbreviation, party_score, entered_by_user, date_entered, user_ip_address) VALUES ($1, $2, $3, 'emeka', '2021-04-26', '192.168')"
-    async.eachSeries(
-      partyResults,
-      function (party, callback) {
-        pool.query(iQuery, [req.unitId, party.abbr.toUpperCase(), party.score], (reqErr, result) => {
-          // console.log(reqErr)
-          callback(null);
-        });
-      },
-      (err) => {
-        if (err) console.log(err.message);
 
-        res.send("success!!");
-      }
-    );
+  const iQuery =
+    "INSERT INTO announced_pu_results (polling_unit_uniqueid, party_abbreviation, party_score, entered_by_user, date_entered, user_ip_address) VALUES ($1, $2, $3, 'emeka', '2021-04-26', '192.168')";
+
+  async.eachSeries(
+    partyResults,
+    function (party, callback) {
+      pool.query(
+        iQuery,
+        [req.unitId, party.abbr.toUpperCase(), party.score],
+        (reqErr, result) => {
+          // console.log(result, reqErr);
+          callback(null);
+        }
+      );
+    },
+    (err) => {
+      if (err) console.log(err.message);
+
+      res.send("success!!");
+    }
+  );
 };
 
 app.post("/new_polling_unit", createPollingUnit, enterPartyResult);
