@@ -1,2 +1,8 @@
 process
 sofar
+nodeondeployment.txt
+/node_modules
+npm-debug.log
+.DS_Store
+/*.env
+origdbConfig.js

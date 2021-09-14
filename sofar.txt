@@ -1,0 +1,58 @@
+Bincome - test
+---
+Map
+ State ----> LGA ---> Wards ---> Polling Units - Individual parties
+ -- Individual results announced in polling units : table - announced_pu_results.
+ -- Idea in an LGA level, get the result announced - announced_lga_results. Calculate the actual result using the actuall polling units results. Compare the actual and the announced.
+ 
+ Database Structure;
+ - Table - 
+     - List of polling_unit. Columns - Ward, ID, LGA ID, state ID
+     - List of wards.
+     - List of LGA.
+     - Announced polling unit result. (announced_pu_restults)
+         - contain polling units
+         - parties in a polling unitss
+         - score of parties in a polling unit
+         - Each polling unit has a unique ID that can be used to identify all parties in that polling unit - polling_unit_uniqueid.
+     - Announced  LGA result. - announced_lga_results
+         - results of local government
+
+ 1. Create page to display  RESULT OF INDIVIDUAL POLLING UNIT.
+       - Page has list of polling units;
+       - Click on a polling units;
+       - You see list of parties and results 
+       - [polling unit -> parties and score, total]
+       - Relevant tables :  announced_pu_results and polling_unit. RElationship : polling_unit.uniqueid = announced_pu_results.polling_unit_uniqueid
+ 2. Create a Page to display summed total result of all polling units under any local government ()
+     - A page has a drop-down;
+     - Drop-down contain list of local government.
+     - Click on a local Government : 
+     - - see local govt and Total polling unit result (- get the score of all parties in all polling unit in a local govt.) [local govt - delta, Total polling unit result - 444, _see breakdown of polling unit_]
+     - click on polling unit
+     - see a list of individual (just like 1) poling units and total score (result of all parties in that unit)
+     - list [poling units - polling unit result, _seebreakdown_]
+     - [see parties - party score]
+     - (if you click on an individual polling unit you should see how the score are divided)
+RElationship - 
+- polling_unit table has local govt Id to link each polling unit to their local government.
+- polling_unit.lga_id = lga.lga_id ) -- 35
+3. Create a new polling unit
+   - with parties
+   - and results.
+   - save to data base - delta.. unit..
+     - 
+NEXT STEP. Examine data base.
+Find relationship - done
+Relevant tables : - done
+Next step - watch videos on node and react.
+refresh knowledge on node.
+Design:
+React - frontend;
+Node/ExpressJs - Backend.
+
+create visualizations. - check online
+
+PROCESS AND MISTAKES
+Communication between react frontend and node backend.
+ - create a react app directly in a folder - _npx create-react-app ._

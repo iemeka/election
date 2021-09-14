@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const port = process.env.PORT || 4000;
 const cors = require("cors");
 const pool = require("./dbConfig");
 const async = require("async");
@@ -36,6 +37,7 @@ app.get("/polling_units/polling_unit/:pUid", (req, res) => {
 // select lga_id, lga_name from lga;
 app.get("/lga", (req, res) => {
   pool.query("SELECT lga_id, lga_name FROM lga", (err, result) => {
+    if (err) console.log(err);
     res.send(result.rows);
   });
 });
@@ -44,6 +46,7 @@ app.get("/lga", (req, res) => {
 // select lga_id, lga_name from lga;
 app.get("/ward", (req, res) => {
   pool.query("SELECT ward_id, ward_name FROM ward", (err, result) => {
+    if (err) console.log(err);
     res.send(result.rows);
   });
 });
@@ -149,6 +152,6 @@ const enterPartyResult = (req, res, next) => {
 
 app.post("/new_polling_unit", createPollingUnit, enterPartyResult);
 
-app.listen(5000, () => {
-  console.log("running on port 5000");
+app.listen(port, () => {
+  console.log(`running on port 5000 ${port}`);
 });
