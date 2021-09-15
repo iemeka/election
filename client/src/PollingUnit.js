@@ -23,6 +23,13 @@ export default function PollingUnit() {
     });
   }, []);
 
+  const scroll = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="main-content">
       <div className="title">
@@ -60,6 +67,7 @@ export default function PollingUnit() {
           )
         )
       )}
+      <button className="scroll" onClick={() => scroll()}>Up</button>
     </div>
   );
 }

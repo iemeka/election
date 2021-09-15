@@ -18,6 +18,13 @@ export default function Lga() {
       setAllLga(response.data);
     });
   }, []);
+  const scroll = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="main-content">
       <div className="title">
@@ -31,22 +38,28 @@ export default function Lga() {
             <p onClick={() => getTotalResult(item.lga_id)}>
               {item.lga_name} <button>view result</button>
             </p>
-            <div className="sub-list"
+            <div
+              className="sub-list"
               style={{
                 display: lgaId === item.lga_id ? "block" : "none",
               }}
             >
-              {Object.keys(oneLga).length !== 0
-                ? Object.keys(oneLga).map((item,i) => (
-                    <p key={i}>
-                      <span>{item}</span> <span>{oneLga[item]}</span>
-                    </p>
-                  ))
-                : <div className="no-data">No data</div> }
+              {Object.keys(oneLga).length !== 0 ? (
+                Object.keys(oneLga).map((item, i) => (
+                  <p key={i}>
+                    <span>{item}</span> <span>{oneLga[item]}</span>
+                  </p>
+                ))
+              ) : (
+                <div className="no-data">No data</div>
+              )}
             </div>
           </div>
         ))
       )}
+      <button className="scroll" onClick={() => scroll()}>
+        Up
+      </button>
     </div>
   );
 }

@@ -212,3 +212,24 @@ form .msg{
   padding:10px;
   color: #57676e;
 }
+
+.container .main-content .scroll{
+  background-color: #c3ccd0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  cursor: pointer;
+  border:0;
+  color: #57676e;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0%), 0 0 10px rgb(0 0 0 / 10%);
+  text-transform: uppercase;
+}
+
+.container .main-content .scroll:hover{
+  background-color: #c3ccd06c;
+}
