@@ -9,7 +9,6 @@ export default function Lga() {
 
   const getTotalResult = (idx) => {
     Axios.get(baseurl + `lga/polling_units/${idx}`).then((response) => {
-      console.log(response.data);
       setOneLga(response.data);
       setLgaId(idx);
     });
@@ -38,8 +37,8 @@ export default function Lga() {
               }}
             >
               {Object.keys(oneLga).length !== 0
-                ? Object.keys(oneLga).map((item) => (
-                    <p>
+                ? Object.keys(oneLga).map((item,i) => (
+                    <p key={i}>
                       <span>{item}</span> <span>{oneLga[item]}</span>
                     </p>
                   ))

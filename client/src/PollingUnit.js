@@ -9,9 +9,8 @@ export default function PollingUnit() {
   const [unitId, setUnitId] = useState(null);
 
   const getParties = (idx) => {
-    Axios.get(baseurl+`polling_units/polling_unit/${idx}`).then(
+    Axios.get(baseurl + `polling_units/polling_unit/${idx}`).then(
       (response) => {
-        console.log(response.data);
         setOnePollingUnit(response.data);
         setUnitId(idx);
       }
@@ -19,10 +18,9 @@ export default function PollingUnit() {
   };
 
   useEffect(() => {
-    Axios.get(baseurl+"polling_units").then((response) => {
+    Axios.get(baseurl + "polling_units").then((response) => {
       setAllPollingUnits(response.data.rows);
     });
-
   }, []);
 
   return (
@@ -30,29 +28,38 @@ export default function PollingUnit() {
       <div className="title">
         <h3>Polling Unit Result</h3>
       </div>
-      {allPollingUnits.length === 0 ? <span>Loading...</span> : allPollingUnits.map((item) => (
-         item.polling_unit_name && item.polling_unit_name.trim().length === 0 ? null :
-        <div key={item.uniqueid} className="list-item">
-          <p onClick={() => getParties(item.uniqueid)}>
-            {item.polling_unit_name}
-            <button>view result</button>
-          </p>
-          <div
-            className="sub-list"
-            style={{
-              display: unitId === item.uniqueid ? "block" : "none",
-            }}
-          >
-            {Object.keys(onePollingUnit).length === 0 ? <div className="no-data">No data</div> : onePollingUnit.map((item, i) => (
-             
-              <p key={i}>
-                <span>{item.party_abbreviation}</span>{" "}
-                <span>{item.party_score}</span>
+      {allPollingUnits.length === 0 ? (
+        <span>Loading...</span>
+      ) : (
+        allPollingUnits.map((item) =>
+          item.polling_unit_name === null ? null : item.polling_unit_name.trim()
+              .length === 0 ? null : (
+            <div key={item.uniqueid} className="list-item">
+              <p onClick={() => getParties(item.uniqueid)}>
+                {item.polling_unit_name}
+                <button>view result</button>
               </p>
-            ))}
-          </div>
-        </div>
-      ))}
+              <div
+                className="sub-list"
+                style={{
+                  display: unitId === item.uniqueid ? "block" : "none",
+                }}
+              >
+                {Object.keys(onePollingUnit).length === 0 ? (
+                  <div className="no-data">No data</div>
+                ) : (
+                  onePollingUnit.map((item, i) => (
+                    <p key={i}>
+                      <span>{item.party_abbreviation}</span>{" "}
+                      <span>{item.party_score}</span>
+                    </p>
+                  ))
+                )}
+              </div>
+            </div>
+          )
+        )
+      )}
     </div>
   );
 }

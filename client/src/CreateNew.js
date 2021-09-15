@@ -11,8 +11,8 @@ export default function CreateNew() {
   const [partyResults, setPartyResults] = useState([]);
   const [partyAbb, setPartyAbb] = useState("");
   const [partyScore, setPartyScore] = useState("");
-  const [postLgaId, setPostLgaId] = useState(0);
-  const [postWardId, setPostWardId] = useState(0);
+  const [postLgaId, setPostLgaId] = useState(1);
+  const [postWardId, setPostWardId] = useState(1);
 
   const savePary = () => {
     if (
@@ -34,10 +34,14 @@ export default function CreateNew() {
     Axios.get(baseurl + "lga").then((response) => {
       setAllLga(response.data);
     });
-    Axios.get(baseurl + "ward").then((response) => {
-      setWards(response.data);
-    });
   }, []);
+
+  useEffect(() => {
+    Axios.get(baseurl + `ward/${postLgaId}`).then((response) => {
+      setWards(response.data);
+      setPostWardId(response.data[0].ward_id);
+    });
+  }, [postLgaId]);
 
   const validInputs = () => {
     if (puName.trim().length === 0 || partyResults.length === 0) {
@@ -58,7 +62,6 @@ export default function CreateNew() {
         pollingUnitName: puName,
         partyResults: partyResults,
       }).then((response) => {
-        console.log(response);
         setMsg("New Polling Unit added Successfully!");
         setPartyResults([]);
         setpuName("");

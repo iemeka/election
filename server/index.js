@@ -44,8 +44,10 @@ app.get("/lga", (req, res) => {
 
 // Get list of all wards;
 // select lga_id, lga_name from lga;
-app.get("/ward", (req, res) => {
-  pool.query("SELECT ward_id, ward_name FROM ward", (err, result) => {
+app.get("/ward/:lgaId", (req, res) => {
+  let lgaId = req.params.lgaId;
+  const sQuery = "SELECT ward_id, ward_name FROM ward WHERE lga_id = $1";
+  pool.query(sQuery,[lgaId], (err, result) => {
     if (err) console.log(err);
     res.send(result.rows);
   });
