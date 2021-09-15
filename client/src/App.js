@@ -5,19 +5,19 @@ import Lga from "./Lga";
 import PollingUnit from "./PollingUnit";
 
 function App() {
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState(<PollingUnit />);
   return (
     <div className="container">
-      <div>
+      <div className="nav">
         <button onClick={() => setContent(<PollingUnit />)}>
           polling unit result
         </button>
-        <button onClick={() => setContent(<Lga />)}>government result</button>
+        <button onClick={() => setContent(<Lga />)}>local government result</button>
         <button onClick={() => setContent(<CreateNew />)}>
           create polling unit
         </button>
       </div>
-      <div>{content}</div>
+      <div className="content">{content}</div>
     </div>
   );
 }

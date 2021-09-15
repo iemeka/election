@@ -1,6 +1,5 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { baseurl } from "./baseurl";
-import "./Lga.css";
 import Axios from "axios";
 
 export default function Lga() {
@@ -21,29 +20,34 @@ export default function Lga() {
     });
   }, []);
   return (
-    <div className="allLga">
-      {allLga.length === 0
-        ? "Loading..."
-        : allLga.map((item) => (
-            <div key={item.lga_id}>
-              <p onClick={() => getTotalResult(item.lga_id)}>{item.lga_name}</p>
-              <div
-                style={{
-                  height: "auto",
-                  background: "lightgrey",
-                  display: lgaId === item.lga_id ? "block" : "none",
-                }}
-              >
-                {Object.keys(oneLga).length !== 0
-                  ? Object.keys(oneLga).map((item) => (
-                      <p>
-                        <span>{item}</span> <span>{oneLga[item]}</span>
-                      </p>
-                    ))
-                  : "No Data"}
-              </div>
+    <div className="main-content">
+      <div className="title">
+        <h3>local government Result</h3>
+      </div>
+      {allLga.length === 0 ? (
+        <span>Loading...</span>
+      ) : (
+        allLga.map((item) => (
+          <div key={item.lga_id} className="list-item">
+            <p onClick={() => getTotalResult(item.lga_id)}>
+              {item.lga_name} <button>view result</button>
+            </p>
+            <div className="sub-list"
+              style={{
+                display: lgaId === item.lga_id ? "block" : "none",
+              }}
+            >
+              {Object.keys(oneLga).length !== 0
+                ? Object.keys(oneLga).map((item) => (
+                    <p>
+                      <span>{item}</span> <span>{oneLga[item]}</span>
+                    </p>
+                  ))
+                : <div className="no-data">No data</div> }
             </div>
-          ))}
+          </div>
+        ))
+      )}
     </div>
   );
 }

@@ -106,7 +106,7 @@ const createPollingUnit = (req, res, next) => {
   const unitId = Math.floor(Math.random() * 15);
   const { wardId, lgaId, pollingUnitName } = req.body;
   const iQuery =
-    "INSERT INTO polling_unit (polling_unit_id, ward_id, lga_id,polling_unit_name) VALUES ($1,$2,$3,$4)";
+    "INSERT INTO polling_unit (polling_unit_id, ward_id, lga_id,polling_unit_name) VALUES ($1,$2,$3,$4) RETURNING uniqueid ";
   pool.query(
     iQuery,
     [unitId, wardId, lgaId, pollingUnitName],
@@ -115,12 +115,14 @@ const createPollingUnit = (req, res, next) => {
         console.log(err);
         res.send(err);
       } else {
-        req.unitId = unitId;
+        req.unitId = result.rows[0].uniqueid;
         next();
       }
     }
   );
 };
+
+//two things - announced result polling unit uniqueid and polling unit uniqueid
 
 const enterPartyResult = (req, res, next) => {
   // party abbreviation - upper case.
@@ -153,5 +155,5 @@ const enterPartyResult = (req, res, next) => {
 app.post("/new_polling_unit", createPollingUnit, enterPartyResult);
 
 app.listen(port, () => {
-  console.log(`running on port 5000 ${port}`);
+  console.log(`running on port ${port}`);
 });

@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Axios from "axios";
 import "./CreateNew.css";
 import { baseurl } from "./baseurl";
@@ -6,7 +6,7 @@ import { baseurl } from "./baseurl";
 export default function CreateNew() {
   const [allLga, setAllLga] = useState([]);
   const [allWards, setWards] = useState([]);
-  const [errMsg, setErrorMsg] = useState("");
+  const [msg, setMsg] = useState("");
   const [puName, setpuName] = useState("");
   const [partyResults, setPartyResults] = useState([]);
   const [partyAbb, setPartyAbb] = useState("");
@@ -15,7 +15,6 @@ export default function CreateNew() {
   const [postWardId, setPostWardId] = useState(0);
 
   const savePary = () => {
-    // party max lenght is 4 else data base returns error.
     if (
       partyScore.length === 0 ||
       partyAbb.length === 0 ||
@@ -42,12 +41,12 @@ export default function CreateNew() {
 
   const validInputs = () => {
     if (puName.trim().length === 0 || partyResults.length === 0) {
-      setErrorMsg(
+      setMsg(
         "Invalid Input. Please enter valid values in all text box. Note that party abbrevition should contain a maximum of 4 characters"
       );
       return false;
     }
-    setErrorMsg("");
+    setMsg("");
     return true;
   };
 
@@ -60,21 +59,37 @@ export default function CreateNew() {
         partyResults: partyResults,
       }).then((response) => {
         console.log(response);
-        setErrorMsg("New Polling Unit added Successfully!");
+        setMsg("New Polling Unit added Successfully!");
+        setPartyResults([]);
+        setpuName("");
       });
     }
   };
 
   return (
-    <div className="App">
-      <div className="new-unit">
-        <div>{errMsg}</div>
-        <div>
+    <form
+      className="main-content"
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <div className="title">
+        <h3>create polling unit</h3>
+      </div>
+      <div className="form-content">
+        <div
+          className="msg"
+          style={{ display: msg.trim().length === 0 ? "none" : "block" }}
+        >
+          {msg}
+        </div>
+        <div className="select-lga">
           <label htmlFor="lga">Select Local Government</label>
           <select
             onChange={(e) => setPostLgaId(e.target.value)}
             name="lga"
             id="lga"
+            className="first-three"
           >
             {allLga.map((item) => (
               <option key={item.lga_id} value={item.lga_id}>
@@ -83,11 +98,12 @@ export default function CreateNew() {
             ))}
           </select>
         </div>
-        <div>
+        <div className="select-ward">
           <label htmlFor="ward">Select Ward</label>
           <select
             onClick={(e) => setPostWardId(e.target.value)}
             name="ward"
+            className="first-three"
             id="ward"
           >
             {allWards.map((item, i) => (
@@ -97,20 +113,25 @@ export default function CreateNew() {
             ))}
           </select>
         </div>
-        <div>
-          Polling unit name
-          <input type="text" onChange={(e) => setpuName(e.target.value)} />
+        <div className="unit-name">
+          <label>Polling unit name</label>
+          <input
+            type="text"
+            value={puName}
+            className="first-three"
+            onChange={(e) => setpuName(e.target.value)}
+          />
         </div>
-        <div>
-          <div className="party-box">
-            <span>added Parties</span>
-            {partyResults.map((item, i) => (
-              <p key={i}>
-                {item.abbr}-{item.score}
-              </p>
-            ))}
-          </div>
-          name
+        <div className="party-box">
+          <label>Parties:</label>
+          {partyResults.map((item, i) => (
+            <p key={i}>
+              <span>{item.abbr}</span> <span>{item.score}</span>
+            </p>
+          ))}
+        </div>
+        <div className="party-detail">
+          <label>abbrevition</label>
           <input
             type="text"
             value={partyAbb}
@@ -118,7 +139,9 @@ export default function CreateNew() {
               setPartyAbb(e.target.value);
             }}
           />
-          score
+        </div>
+        <div className="party-detail">
+          <label>score</label>
           <input
             type="text"
             value={partyScore}
@@ -126,10 +149,14 @@ export default function CreateNew() {
               setPartyScore(e.target.value);
             }}
           />
+        </div>
+        <div className="add-party">
           <button onClick={() => savePary()}>add party</button>
         </div>
+      </div>
+      <div className="submit">
         <button onClick={() => createNewUnit()}>Create</button>
       </div>
-    </div>
+    </form>
   );
 }

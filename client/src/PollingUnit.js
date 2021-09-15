@@ -1,5 +1,4 @@
-import react, { useEffect, useState } from "react";
-import "./PollingUnits.css";
+import { useEffect, useState } from "react";
 import Axios from "axios";
 import { baseurl } from "./baseurl";
 
@@ -27,22 +26,26 @@ export default function PollingUnit() {
   }, []);
 
   return (
-    <div className="allPollingUnits">
-      {allPollingUnits.length === 0 ? "Loading..." : allPollingUnits.map((item) => (
-        <div key={item.uniqueid}>
+    <div className="main-content">
+      <div className="title">
+        <h3>Polling Unit Result</h3>
+      </div>
+      {allPollingUnits.length === 0 ? <span>Loading...</span> : allPollingUnits.map((item) => (
+         item.polling_unit_name && item.polling_unit_name.trim().length === 0 ? null :
+        <div key={item.uniqueid} className="list-item">
           <p onClick={() => getParties(item.uniqueid)}>
             {item.polling_unit_name}
+            <button>view result</button>
           </p>
           <div
-            className="parties"
+            className="sub-list"
             style={{
-              height: "auto",
-              background: "lightgrey",
               display: unitId === item.uniqueid ? "block" : "none",
             }}
           >
-            {Object.keys(onePollingUnit).length === 0 ? "No data" :onePollingUnit.map((item) => (
-              <p>
+            {Object.keys(onePollingUnit).length === 0 ? <div className="no-data">No data</div> : onePollingUnit.map((item, i) => (
+             
+              <p key={i}>
                 <span>{item.party_abbreviation}</span>{" "}
                 <span>{item.party_score}</span>
               </p>
