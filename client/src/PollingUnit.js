@@ -28,7 +28,7 @@ export default function PollingUnit() {
 
   return (
     <div className="allPollingUnits">
-      {allPollingUnits.map((item) => (
+      {allPollingUnits.length === 0 ? "Loading..." : allPollingUnits.map((item) => (
         <div key={item.uniqueid}>
           <p onClick={() => getParties(item.uniqueid)}>
             {item.polling_unit_name}
