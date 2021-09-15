@@ -15,7 +15,7 @@ app.use(express.json()); // allows us to get access to request . body.
 // Get all polling unit name;
 // select uniqueid, polling_unit_name from polling_unit where uniqueid < \\28;
 app.get("/polling_units", (req, res) => {
-  const sQuery = "SELECT uniqueid, polling_unit_name FROM polling_unit ORDER BY uniqueid DESC;";
+  const sQuery = "SELECT uniqueid, polling_unit_name FROM polling_unit;"; //  ORDER BY uniqueid DESC
   pool.query(sQuery, (err, result) => {
     res.send(result);
   });
