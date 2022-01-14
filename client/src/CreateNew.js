@@ -20,8 +20,12 @@ export default function CreateNew() {
       partyAbb.length === 0 ||
       partyAbb.length > 4 ||
       isNaN(Number(partyScore))
-    )
+    ) {
+      setMsg(
+        "Invalid Input. Please enter valid values in all text box. Note that party abbrevition should contain a maximum of 4 characters"
+      );
       return;
+    }
     setPartyResults([
       ...partyResults,
       { abbr: partyAbb, score: Number(partyScore) },
